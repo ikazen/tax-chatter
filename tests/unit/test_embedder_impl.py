@@ -3,10 +3,10 @@ from unittest.mock import MagicMock, patch
 
 import numpy as np
 
-from src.storage.embedder_impl import SentenceTransformersEmbedder
+from src.storage.sentence_transformers import SentenceTransformersEmbedder
 
 
-@patch("src.storage.embedder_impl.SentenceTransformer")
+@patch("src.storage.sentence_transformers.SentenceTransformer")
 async def test_embed_returns_list_of_floats(mock_st_class: MagicMock) -> None:
     """embed가 list[float]를 반환하는지 확인한다."""
     mock_model = MagicMock()
@@ -22,7 +22,7 @@ async def test_embed_returns_list_of_floats(mock_st_class: MagicMock) -> None:
     mock_model.encode.assert_called_once_with("안녕하세요")
 
 
-@patch("src.storage.embedder_impl.SentenceTransformer")
+@patch("src.storage.sentence_transformers.SentenceTransformer")
 async def test_embed_batch_returns_list_of_lists(mock_st_class: MagicMock) -> None:
     """embed_batch가 list[list[float]]를 반환하는지 확인한다."""
     mock_model = MagicMock()
@@ -37,8 +37,8 @@ async def test_embed_batch_returns_list_of_lists(mock_st_class: MagicMock) -> No
     assert result[1] == [0.3, 0.4]
 
 
-@patch("src.storage.embedder_impl.SentenceTransformer")
-@patch("src.storage.embedder_impl.settings")
+@patch("src.storage.sentence_transformers.SentenceTransformer")
+@patch("src.storage.sentence_transformers.settings")
 async def test_default_model_from_settings(
     mock_settings: MagicMock, mock_st_class: MagicMock
 ) -> None:
@@ -51,7 +51,7 @@ async def test_default_model_from_settings(
     mock_st_class.assert_called_once_with("ko-sroberta")
 
 
-@patch("src.storage.embedder_impl.SentenceTransformer")
+@patch("src.storage.sentence_transformers.SentenceTransformer")
 async def test_custom_model_override(mock_st_class: MagicMock) -> None:
     """커스텀 모델명이 settings를 오버라이드한다."""
     mock_st_class.return_value = MagicMock()

@@ -1,7 +1,7 @@
 """OllamaProvider 단위 테스트."""
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from src.llm.base import LLMProvider
+from src.llm.llm_provider import LLMProvider
 from src.llm.local import OllamaProvider
 from src.models import Message
 

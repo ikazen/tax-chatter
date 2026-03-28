@@ -4,7 +4,7 @@ from collections.abc import AsyncIterator
 import httpx
 
 from config.settings import settings
-from src.llm.base import LLMProvider
+from src.llm.llm_provider import LLMProvider
 from src.models import Message
 
 _DEFAULT_OLLAMA_URL = "http://localhost:11434"

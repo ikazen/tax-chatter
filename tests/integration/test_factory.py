@@ -5,7 +5,7 @@ import pytest
 
 from src.factory import create_chat_adapter, create_embedder, create_llm, create_vector_store
 from src.interfaces.base import ChatAdapter
-from src.llm.base import LLMProvider
+from src.llm.llm_provider import LLMProvider
 from src.storage.embedder import Embedder
 from src.storage.vector_store import VectorStore
 
@@ -49,7 +49,7 @@ def test_create_llm_unsupported_raises(mock_settings) -> None:
 
 
 @patch("src.factory.settings")
-@patch("src.storage.embedder_impl.SentenceTransformer")
+@patch("src.storage.sentence_transformers.SentenceTransformer")
 def test_create_embedder_sentence_transformers(
     mock_st, mock_settings
 ) -> None:

@@ -4,7 +4,7 @@
 """
 from config.settings import settings
 from src.interfaces.base import ChatAdapter
-from src.llm.base import LLMProvider
+from src.llm.llm_provider import LLMProvider
 from src.storage.embedder import Embedder
 from src.storage.vector_store import VectorStore
 
@@ -25,7 +25,7 @@ def create_llm() -> LLMProvider:
 def create_embedder() -> Embedder:
     """settings.embedder_backend에 따라 Embedder 구현체를 반환한다."""
     if settings.embedder_backend == "sentence_transformers":
-        from src.storage.embedder_impl import SentenceTransformersEmbedder
+        from src.storage.sentence_transformers import SentenceTransformersEmbedder
 
         return SentenceTransformersEmbedder()
     raise ValueError(f"지원하지 않는 Embedder 백엔드: {settings.embedder_backend}")

@@ -4,7 +4,7 @@ from collections.abc import AsyncIterator
 import google.generativeai as genai
 
 from config.settings import settings
-from src.llm.base import LLMProvider
+from src.llm.llm_provider import LLMProvider
 from src.models import Message
 
 

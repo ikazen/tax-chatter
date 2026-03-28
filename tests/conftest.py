@@ -5,7 +5,7 @@ import pytest
 
 from src.ingestion.chunker import ChunkWithMetadata
 from src.ingestion.loader import LoadedPage
-from src.llm.base import LLMProvider
+from src.llm.llm_provider import LLMProvider
 from src.models import SourceChunk
 from src.storage.embedder import Embedder
 from src.storage.vector_store import VectorStore
