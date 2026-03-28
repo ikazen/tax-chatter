@@ -1,11 +1,14 @@
 """공통 pytest fixture."""
-import pytest
 from unittest.mock import AsyncMock, MagicMock
 
-from src.models import SourceChunk
+import pytest
+
+from src.ingestion.chunker import ChunkWithMetadata
+from src.ingestion.loader import LoadedPage
 from src.llm.base import LLMProvider
-from src.storage.vector_store import VectorStore
+from src.models import SourceChunk
 from src.storage.embedder import Embedder
+from src.storage.vector_store import VectorStore
 
 
 @pytest.fixture
@@ -52,4 +55,36 @@ def mock_embedder() -> Embedder:
     mock = AsyncMock(spec=Embedder)
     mock.embed.return_value = [0.1] * 768
     mock.embed_batch.return_value = [[0.1] * 768]
+    return mock
+
+
+@pytest.fixture
+def sample_loaded_pages() -> list[LoadedPage]:
+    """테스트용 로드된 페이지."""
+    return [
+        LoadedPage(text="소득세법 제55조 내용", metadata={"source": "소득세법.pdf", "page": 1}),
+        LoadedPage(text="법인세법 제13조 내용", metadata={"source": "법인세법.pdf", "page": 5}),
+    ]
+
+
+@pytest.fixture
+def mock_chunker() -> MagicMock:
+    """mock 청커."""
+    mock = MagicMock()
+    mock.chunk_batch.return_value = [
+        ChunkWithMetadata(text="청크1", metadata={"source": "test.pdf", "page": 1}),
+    ]
+    return mock
+
+
+@pytest.fixture
+def mock_loader() -> MagicMock:
+    """mock PDF 로더."""
+    mock = MagicMock()
+    mock.load.return_value = [
+        LoadedPage(text="페이지 내용", metadata={"source": "test.pdf", "page": 1}),
+    ]
+    mock.load_directory.return_value = [
+        LoadedPage(text="페이지 내용", metadata={"source": "test.pdf", "page": 1}),
+    ]
     return mock
