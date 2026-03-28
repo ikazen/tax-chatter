@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.ingestion.loader import PDFLoader
 from src.ingestion.pipeline import IngestionPipeline
 from src.storage.chroma_store import ChromaStore
-from src.storage.embedder_impl import SentenceTransformersEmbedder
+from src.storage.sentence_transformers import SentenceTransformersEmbedder
 
 
 async def main(path: str) -> None:
