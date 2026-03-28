@@ -25,6 +25,10 @@ class Settings(BaseSettings):
     telegram_bot_token: str = ""
     discord_bot_token: str = ""
 
+    # Chunking
+    chunk_size: int = 1000
+    chunk_overlap: int = 200
+
     # RAG
     rag_top_k: int = 5
     rag_score_threshold: float = 0.5

@@ -1,4 +1,5 @@
-"""PDF 문서 로더."""
+"""문서 로더 ABC 및 PDF 구현체."""
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -7,13 +8,29 @@ from pypdf import PdfReader
 
 @dataclass
 class LoadedPage:
-    """로드된 PDF 페이지."""
+    """로드된 문서 페이지."""
 
     text: str
     metadata: dict  # {"source": "파일명.pdf", "page": 1}
 
 
-class PDFLoader:
+class DocumentLoader(ABC):
+    """모든 문서 로더 구현체가 따라야 하는 인터페이스."""
+
+    @abstractmethod
+    def load(self, file_path: str | Path) -> list[LoadedPage]:
+        """단일 파일을 로드한다."""
+        ...
+
+    @abstractmethod
+    def load_directory(
+        self, dir_path: str | Path, glob: str
+    ) -> list[LoadedPage]:
+        """디렉토리 내 파일을 일괄 로드한다."""
+        ...
+
+
+class PDFLoader(DocumentLoader):
     """PDF 파일에서 페이지별 텍스트를 추출한다."""
 
     def load(self, file_path: str | Path) -> list[LoadedPage]:

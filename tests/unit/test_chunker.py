@@ -1,4 +1,6 @@
 """DocumentChunker 단위 테스트."""
+from unittest.mock import patch
+
 from src.ingestion.chunker import ChunkWithMetadata, DocumentChunker
 
 
@@ -65,3 +67,26 @@ def test_chunk_batch() -> None:
     assert len(result) == 2
     assert result[0].metadata["source"] == "a.pdf"
     assert result[1].metadata["source"] == "b.pdf"
+
+
+@patch("src.ingestion.chunker.settings")
+def test_default_values_from_settings(mock_settings) -> None:
+    """chunk_size/overlap 미지정 시 settings에서 가져온다."""
+    mock_settings.chunk_size = 500
+    mock_settings.chunk_overlap = 50
+    chunker = DocumentChunker()
+    text = "가" * 1000
+    result = chunker.chunk(text, {"source": "test.pdf"})
+
+    # chunk_size=500이면 1000자 텍스트가 2개 이상으로 분할
+    assert len(result) >= 2
+
+
+def test_custom_values_override_settings() -> None:
+    """명시적 chunk_size/overlap이 settings를 오버라이드한다."""
+    chunker = DocumentChunker(chunk_size=5000, chunk_overlap=0)
+    text = "가" * 1000
+    result = chunker.chunk(text, {"source": "test.pdf"})
+
+    # chunk_size=5000이면 1000자 텍스트는 단일 청크
+    assert len(result) == 1

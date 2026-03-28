@@ -4,6 +4,8 @@ from dataclasses import dataclass
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+from config.settings import settings
+
 
 @dataclass
 class ChunkWithMetadata:
@@ -16,10 +18,14 @@ class ChunkWithMetadata:
 class DocumentChunker:
     """문서를 일정 크기의 청크로 분할한다."""
 
-    def __init__(self, chunk_size: int = 1000, chunk_overlap: int = 200) -> None:
+    def __init__(
+        self,
+        chunk_size: int | None = None,
+        chunk_overlap: int | None = None,
+    ) -> None:
         self._splitter = RecursiveCharacterTextSplitter(
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap,
+            chunk_size=chunk_size or settings.chunk_size,
+            chunk_overlap=chunk_overlap or settings.chunk_overlap,
         )
 
     def chunk(self, text: str, metadata: dict) -> list[ChunkWithMetadata]:

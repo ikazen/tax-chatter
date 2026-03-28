@@ -1,7 +1,7 @@
-"""PDFLoader 단위 테스트."""
+"""PDFLoader 및 DocumentLoader ABC 단위 테스트."""
 from unittest.mock import MagicMock, patch
 
-from src.ingestion.loader import PDFLoader
+from src.ingestion.loader import DocumentLoader, PDFLoader
 
 
 def _make_mock_page(text: str) -> MagicMock:
@@ -91,3 +91,16 @@ def test_load_page_numbers_are_1_indexed(mock_reader_class: MagicMock) -> None:
     pages = loader.load("/tmp/test.pdf")
 
     assert [p.metadata["page"] for p in pages] == [1, 2, 3]
+
+
+def test_pdf_loader_is_document_loader() -> None:
+    """PDFLoader가 DocumentLoader ABC의 서브클래스이다."""
+    assert issubclass(PDFLoader, DocumentLoader)
+
+
+def test_document_loader_cannot_instantiate() -> None:
+    """DocumentLoader ABC는 직접 인스턴스화할 수 없다."""
+    import pytest
+
+    with pytest.raises(TypeError):
+        DocumentLoader()  # type: ignore[abstract]

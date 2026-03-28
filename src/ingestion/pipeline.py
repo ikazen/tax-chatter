@@ -3,7 +3,7 @@ import asyncio
 import hashlib
 
 from src.ingestion.chunker import DocumentChunker
-from src.ingestion.loader import LoadedPage, PDFLoader
+from src.ingestion.loader import DocumentLoader, LoadedPage, PDFLoader
 from src.storage.embedder import Embedder
 from src.storage.vector_store import VectorStore
 
@@ -16,7 +16,7 @@ class IngestionPipeline:
         vector_store: VectorStore,
         embedder: Embedder,
         chunker: DocumentChunker | None = None,
-        loader: PDFLoader | None = None,
+        loader: DocumentLoader | None = None,
     ) -> None:
         self._vector_store = vector_store
         self._embedder = embedder
